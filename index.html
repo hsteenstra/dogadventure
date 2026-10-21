@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Dog Adventure</title>
+  <meta name="theme-color" content="#2b1b4a">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- PyScript -->
+  <link rel="stylesheet" href="https://pyscript.net/releases/2024.1.1/core.css">
+  <script type="module" src="https://pyscript.net/releases/2024.1.1/core.js"></script>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ============ LOADING SCREEN (hidden once Python starts updating the page) ============ -->
+  <div class="loader" id="loader" role="status" aria-live="polite">
+    <div class="loader-inner">
+      <p class="loader-title">Dog<br>Adventure</p>
+      <div class="loader-track"><span></span></div>
+      <p class="loader-note">Loading Python…</p>
+    </div>
+  </div>
+
+  <!-- ============ WORLD: illustrated background scene ============ -->
+  <div class="world" aria-hidden="true">
+    <svg class="world-svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMax slice">
+      <defs>
+        <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#22163f"/>
+          <stop offset="0.38" stop-color="#5c3170"/>
+          <stop offset="0.62" stop-color="#c2577a"/>
+          <stop offset="0.8" stop-color="#f29a63"/>
+          <stop offset="1" stop-color="#ffd48a"/>
+        </linearGradient>
+        <radialGradient id="sunglow" cx="0.5" cy="0.5" r="0.5">
+          <stop offset="0" stop-color="#ffe9b8" stop-opacity="0.9"/>
+          <stop offset="0.35" stop-color="#ffb877" stop-opacity="0.45"/>
+          <stop offset="1" stop-color="#ff8a6a" stop-opacity="0"/>
+        </radialGradient>
+        <linearGradient id="haze" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#ffb38a" stop-opacity="0"/>
+          <stop offset="1" stop-color="#ffb38a" stop-opacity="0.35"/>
+        </linearGradient>
+        <symbol id="pine" viewBox="-60 -140 120 170" overflow="visible">
+          <path d="M0 -140 L26 -92 L14 -92 L40 -50 L24 -50 L54 0 L-54 0 L-24 -50 L-40 -50 L-14 -92 L-26 -92 Z"/>
+          <rect x="-6" y="0" width="12" height="22"/>
+        </symbol>
+      </defs>
+
+      <rect width="1600" height="900" fill="url(#sky)"/>
+
+      <g class="stars">
+        <circle cx="140" cy="90" r="2"/><circle cx="310" cy="160" r="1.4"/><circle cx="520" cy="70" r="1.8"/>
+        <circle cx="760" cy="130" r="1.2"/><circle cx="980" cy="60" r="2"/><circle cx="1180" cy="150" r="1.5"/>
+        <circle cx="1390" cy="80" r="1.8"/><circle cx="1520" cy="190" r="1.2"/><circle cx="420" cy="230" r="1.2"/>
+        <circle cx="1280" cy="250" r="1.3"/>
+      </g>
+
+      <g class="layer" style="--depth: 4">
+        <circle cx="1060" cy="600" r="380" fill="url(#sunglow)"/>
+        <circle cx="1060" cy="600" r="118" fill="#ffe3a6"/>
+      </g>
+
+      <g class="layer" style="--depth: 8">
+        <path fill="#a14d74" opacity="0.75" d="M-40 640 L110 540 L220 585 L380 450 L520 560 L650 488 L790 585 L920 470 L1060 560 L1190 480 L1330 575 L1470 500 L1640 570 L1640 900 L-40 900 Z"/>
+      </g>
+
+      <g class="layer" style="--depth: 14">
+        <path fill="#77345f" d="M-40 700 C180 620 360 660 560 630 C760 600 900 670 1100 640 C1300 610 1460 660 1640 628 L1640 900 L-40 900 Z"/>
+        <g fill="#5a2852">
+          <use href="#pine" x="80" y="560" width="120" height="170"/>
+          <use href="#pine" x="170" y="590" width="90" height="130"/>
+          <use href="#pine" x="1290" y="560" width="120" height="170"/>
+          <use href="#pine" x="1400" y="585" width="96" height="140"/>
+          <use href="#pine" x="1490" y="560" width="110" height="160"/>
+        </g>
+      </g>
+
+      <rect y="560" width="1600" height="340" fill="url(#haze)"/>
+
+      <g class="layer" style="--depth: 22">
+        <path fill="#3f1d47" d="M-40 790 C220 735 420 768 640 752 C900 734 1100 795 1340 765 C1460 750 1540 755 1640 760 L1640 900 L-40 900 Z"/>
+        <g fill="#2c1436">
+          <use href="#pine" x="-30" y="560" width="200" height="290"/>
+          <use href="#pine" x="110" y="640" width="140" height="200"/>
+          <use href="#pine" x="1380" y="590" width="180" height="260"/>
+          <use href="#pine" x="1500" y="530" width="210" height="310"/>
+        </g>
+      </g>
+    </svg>
+
+    <div class="fireflies">
+      <i style="--x: 12%; --y: 70%; --t: 7s;  --d: 0s"></i>
+      <i style="--x: 24%; --y: 82%; --t: 9s;  --d: 2s"></i>
+      <i style="--x: 41%; --y: 76%; --t: 8s;  --d: 4s"></i>
+      <i style="--x: 63%; --y: 85%; --t: 10s; --d: 1s"></i>
+      <i style="--x: 78%; --y: 72%; --t: 7.5s; --d: 3s"></i>
+      <i style="--x: 90%; --y: 80%; --t: 9.5s; --d: 5s"></i>
+    </div>
+    <div class="vignette"></div>
+  </div>
+
+  <!-- ============ GAME ============ -->
+  <main class="game">
+
+    <!-- Top HUD -->
+    <header class="hud">
+      <p class="brand">Dog <span>Adventure</span></p>
+      <div class="bond" title="Your bond with your dog">
+        <span class="bond-label">Bond</span>
+        <div id="hearts" class="bond-hearts"></div>
+      </div>
+    </header>
+
+    <!-- Stats -->
+    <section class="stats panel" aria-label="Dog stats">
+      <h2 class="panel-title">Vitals</h2>
+
+      <div class="stat stat--happiness">
+        <div class="stat-head">
+          <span class="stat-name">
+            <svg class="stat-glyph" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M8 14c1 1.6 2.4 2.4 4 2.4s3-.8 4-2.4" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><circle cx="9" cy="9.8" r="1.4" fill="currentColor"/><circle cx="15" cy="9.8" r="1.4" fill="currentColor"/></svg>
+            Happiness
+          </span>
+          <span id="happiness" class="stat-value">--</span>
+        </div>
+        <div class="stat-track"><div id="happiness-bar" class="stat-fill"></div></div>
+      </div>
+
+      <div class="stat stat--hunger">
+        <div class="stat-head">
+          <span class="stat-name">
+            <svg class="stat-glyph" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.5 5.5a2.4 2.4 0 0 0-3.4 3.3 2.4 2.4 0 0 0 1.9 3.6l6.5 6.4a2.4 2.4 0 0 0 3.6 1.9 2.4 2.4 0 0 0 3.3-3.4 2.4 2.4 0 0 0-1.9-3.6l-6.5-6.4a2.4 2.4 0 0 0-3.5-1.8z" fill="currentColor"/></svg>
+            Hunger
+          </span>
+          <span id="hunger" class="stat-value">--</span>
+        </div>
+        <div class="stat-track"><div id="hunger-bar" class="stat-fill"></div></div>
+      </div>
+
+      <div class="stat stat--energy">
+        <div class="stat-head">
+          <span class="stat-name">
+            <svg class="stat-glyph" viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 2 5 13.5h6L9.5 22 19 9.5h-6.2z" fill="currentColor"/></svg>
+            Energy
+          </span>
+          <span id="energy" class="stat-value">--</span>
+        </div>
+        <div class="stat-track"><div id="energy-bar" class="stat-fill"></div></div>
+      </div>
+    </section>
+
+    <!-- Stage: the dog in the world -->
+    <section class="stage" aria-label="Your dog">
+      <div class="nameplate">
+        <span class="nameplate-tag">Companion</span>
+        <h1 id="dog-name" class="nameplate-name">&nbsp;</h1>
+      </div>
+
+      <div class="actor" id="actor">
+        <svg class="dog" viewBox="0 0 280 240" role="img" aria-label="Your dog">
+          <!-- grassy mound -->
+          <g class="mound">
+            <path d="M-20 252 C10 222 70 206 140 206 C210 206 270 222 300 252 Z" fill="#2c1436"/>
+            <path d="M150 207 C210 208 262 222 292 246" fill="none" stroke="#ff9d6c" stroke-width="3" stroke-linecap="round" opacity="0.6"/>
+            <path d="M40 214 l4 -12 l3 12 M58 210 l3 -9 l3 9 M222 210 l3 -10 l3 10 M240 215 l4 -12 l3 12" fill="none" stroke="#5a2852" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          </g>
+          <ellipse class="dog-shadow" cx="134" cy="213" rx="78" ry="8" fill="#14081e" opacity="0.55"/>
+
+          <!-- props -->
+          <g class="prop prop-bowl">
+            <path d="M206 198 h56 l-7 15 h-42 z" fill="#2fc1a7"/>
+            <rect x="203" y="194" width="62" height="7" rx="3.5" fill="#59e0c4"/>
+            <g class="kibble" fill="#a45a2a">
+              <circle cx="222" cy="192" r="4.5"/><circle cx="232" cy="190" r="4.5"/><circle cx="242" cy="192" r="4.5"/><circle cx="250" cy="193" r="3.5"/>
+            </g>
+          </g>
+
+          <g class="prop prop-ball">
+            <circle cx="0" cy="0" r="11" fill="#ffc94a"/>
+            <path d="M-11 0 C-4 -6 4 6 11 0" fill="none" stroke="#c98a17" stroke-width="3"/>
+          </g>
+
+          <g class="prop prop-zzz" fill="#fff1dc" font-family="Space Mono, monospace" font-weight="700">
+            <text class="z z1" x="204" y="66" font-size="18">z</text>
+            <text class="z z2" x="218" y="48" font-size="22">z</text>
+            <text class="z z3" x="234" y="28" font-size="26">Z</text>
+          </g>
+
+          <!-- dog -->
+          <g class="dog-rig">
+            <g class="dog-tail">
+              <path d="M84 180 C58 178 36 162 32 134 C31 125 39 121 43 130 C51 151 64 163 88 167 Z" fill="#b5682f"/>
+            </g>
+
+            <g class="dog-body">
+              <ellipse cx="102" cy="172" rx="46" ry="38" fill="#e39a52"/>
+              <path d="M94 150 C94 110 120 92 148 96 C172 100 180 130 174 168 C170 196 152 207 126 207 C104 207 94 186 94 150 Z" fill="#e39a52"/>
+              <ellipse cx="98" cy="182" rx="32" ry="25" fill="#c97c3c"/>
+              <ellipse cx="92" cy="207" rx="23" ry="7.5" fill="#f7d9ad"/>
+              <path d="M152 108 C172 112 180 140 174 170 C170 190 158 200 148 196 C142 170 142 130 152 108 Z" fill="#f7d9ad"/>
+              <rect x="138" y="156" width="15" height="52" rx="7.5" fill="#c97c3c"/>
+              <rect x="156" y="154" width="16" height="54" rx="8" fill="#e39a52"/>
+              <ellipse cx="148" cy="208" rx="11" ry="6" fill="#ecc896"/>
+              <ellipse cx="167" cy="208" rx="12" ry="6.5" fill="#f7d9ad"/>
+              <path d="M130 112 C144 124 164 124 178 112 L180 123 C166 135 144 135 128 123 Z" fill="#2fc1a7"/>
+              <circle cx="162" cy="132" r="6" fill="#ffc94a" stroke="#8a5a10" stroke-width="1.5"/>
+            </g>
+
+            <g class="dog-head">
+              <path d="M170 56 C181 52 189 61 187 78 C180 74 174 67 170 56 Z" fill="#b5682f"/>
+              <ellipse cx="154" cy="78" rx="35" ry="32" fill="#e39a52"/>
+              <path d="M160 52 C168 50 178 56 182 64 C172 62 164 60 160 52 Z" fill="#f2b06e" opacity="0.7"/>
+              <ellipse cx="186" cy="91" rx="25" ry="15.5" fill="#f7d9ad"/>
+              <path class="dog-tongue" d="M183 99 C182 112 194 114 196 101 Z" fill="#ff6f86"/>
+              <path d="M202 80 C209 80 213 84 211 89 C209 94 200 94 198 89 C196 85 197 80 202 80 Z" fill="#2a1622"/>
+              <path d="M198 96 C192 102 184 102 178 98" fill="none" stroke="#2a1622" stroke-width="2.6" stroke-linecap="round"/>
+              <g class="dog-eye">
+                <ellipse cx="168" cy="72" rx="4.8" ry="5.4" fill="#2a1622"/>
+                <circle cx="169.6" cy="70.2" r="1.6" fill="#fff"/>
+              </g>
+              <path d="M160 61 C165 58 172 59 175 62" fill="none" stroke="#b5682f" stroke-width="3" stroke-linecap="round"/>
+              <path class="dog-ear" d="M128 52 C116 56 110 78 116 104 C120 110 128 108 132 100 C138 84 142 64 138 54 C136 50 132 50 128 52 Z" fill="#a85d28"/>
+            </g>
+          </g>
+        </svg>
+      </div>
+
+      <div class="dialogue" id="dialogue" aria-live="polite">
+        <div id="status-icon" class="dialogue-icon"></div>
+        <p id="status-text" class="dialogue-text">&nbsp;</p>
+      </div>
+    </section>
+
+    <!-- Actions -->
+    <nav class="actions" aria-label="Actions">
+      <button type="button" class="action action--feed" py-click="feed" data-anim="feed" data-key="1">
+        <span class="action-face">
+          <svg class="action-icon" viewBox="0 0 32 32" aria-hidden="true"><path d="M4 15h24a12 9 0 0 1-24 0z" fill="currentColor"/><path d="M3 15h26" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/><circle cx="11" cy="11" r="2.6" fill="currentColor"/><circle cx="17" cy="9.5" r="2.6" fill="currentColor"/><circle cx="22" cy="11.5" r="2.2" fill="currentColor"/></svg>
+          <span class="action-text">
+            <span class="action-label">Feed</span>
+            <span class="action-sub">Fill the bowl</span>
+          </span>
+          <kbd class="action-key">1</kbd>
+        </span>
+      </button>
+
+      <button type="button" class="action action--play" py-click="play" data-anim="play" data-key="2">
+        <span class="action-face">
+          <svg class="action-icon" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="11" fill="none" stroke="currentColor" stroke-width="2.8"/><path d="M5.5 13c4 3.5 17 3.5 21 0M5.5 19c4 -3.5 17 -3.5 21 0" fill="none" stroke="currentColor" stroke-width="2.4"/></svg>
+          <span class="action-text">
+            <span class="action-label">Play</span>
+            <span class="action-sub">Throw the ball</span>
+          </span>
+          <kbd class="action-key">2</kbd>
+        </span>
+      </button>
+
+      <button type="button" class="action action--rest" py-click="rest" data-anim="rest" data-key="3">
+        <span class="action-face">
+          <svg class="action-icon" viewBox="0 0 32 32" aria-hidden="true"><path d="M20.5 4.5A11.5 11.5 0 1 0 27.5 21 9.5 9.5 0 0 1 20.5 4.5z" fill="currentColor"/></svg>
+          <span class="action-text">
+            <span class="action-label">Rest</span>
+            <span class="action-sub">Nap in the grass</span>
+          </span>
+          <kbd class="action-key">3</kbd>
+        </span>
+      </button>
+    </nav>
+
+    <!-- Activity log -->
+    <aside class="journal panel" aria-label="Activity log">
+      <h2 class="panel-title">Journal</h2>
+      <div id="journal-content" class="journal-content" aria-live="polite"></div>
+    </aside>
+  </main>
+
+  <py-script src="main.py"></py-script>
+
+  <!-- Presentation only: animations, keyboard shortcuts, loading screen.
+       All game logic stays in main.py. -->
+  <script>
+    (function () {
+      var root = document.documentElement;
+      var actor = document.getElementById('actor');
+      var loader = document.getElementById('loader');
+      var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      // Dog reacts when an action button is clicked (py-click still runs the Python).
+      var animTimer;
+      document.querySelectorAll('[data-anim]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var anim = btn.dataset.anim;
+          actor.removeAttribute('data-anim');
+          void actor.offsetWidth; // restart the animation
+          actor.setAttribute('data-anim', anim);
+          clearTimeout(animTimer);
+          animTimer = setTimeout(function () { actor.removeAttribute('data-anim'); },
+            anim === 'rest' ? 2600 : 1700);
+        });
+      });
+
+      // Keyboard shortcuts: 1 / 2 / 3
+      document.addEventListener('keydown', function (e) {
+        if (e.repeat || e.metaKey || e.ctrlKey || e.altKey) return;
+        var btn = document.querySelector('.action[data-key="' + e.key + '"]');
+        if (!btn) return;
+        btn.classList.add('is-pressed');
+        btn.click();
+        setTimeout(function () { btn.classList.remove('is-pressed'); }, 140);
+      });
+
+      // Floating "+10 / -5" when a stat number changes.
+      ['happiness', 'hunger', 'energy'].forEach(function (id) {
+        var el = document.getElementById(id);
+        var stat = el.closest('.stat');
+        var last = parseFloat(el.textContent);
+        new MutationObserver(function () {
+          var now = parseFloat(el.textContent);
+          if (!isNaN(last) && !isNaN(now) && now !== last) {
+            var diff = Math.round(now - last);
+            var chip = document.createElement('span');
+            chip.className = 'stat-delta ' + (diff > 0 ? 'is-up' : 'is-down');
+            chip.textContent = (diff > 0 ? '+' : '') + diff;
+            stat.querySelector('.stat-head').appendChild(chip);
+            setTimeout(function () { chip.remove(); }, 1200);
+            stat.classList.remove('is-changed');
+            void stat.offsetWidth;
+            stat.classList.add('is-changed');
+          }
+          last = now;
+        }).observe(el, { childList: true, characterData: true, subtree: true });
+      });
+
+      // Re-play the dialogue entrance whenever the status message changes.
+      var dialogue = document.getElementById('dialogue');
+      new MutationObserver(function () {
+        dialogue.classList.remove('is-new');
+        void dialogue.offsetWidth;
+        dialogue.classList.add('is-new');
+      }).observe(document.getElementById('status-text'), { childList: true, characterData: true, subtree: true });
+
+      // Hide the loading screen as soon as Python writes anything to the page.
+      var game = document.querySelector('.game');
+      function ready() {
+        loader.classList.add('is-done');
+        root.classList.add('is-ready');
+        gameObserver.disconnect();
+      }
+      var gameObserver = new MutationObserver(ready);
+      gameObserver.observe(game, { childList: true, characterData: true, subtree: true, attributes: true, attributeFilter: ['style'] });
+      setTimeout(function () {
+        if (!loader.classList.contains('is-done')) {
+          loader.querySelector('.loader-note').textContent = 'Still loading… check the browser console if this takes too long.';
+        }
+      }, 20000);
+
+      // Gentle parallax on the background scene (mouse only).
+      if (!reduceMotion) {
+        window.addEventListener('pointermove', function (e) {
+          if (e.pointerType !== 'mouse') return;
+          root.style.setProperty('--px', (e.clientX / window.innerWidth - 0.5).toFixed(3));
+          root.style.setProperty('--py', (e.clientY / window.innerHeight - 0.5).toFixed(3));
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
