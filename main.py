@@ -88,9 +88,9 @@ player_name = input("what do you want your nick name to be")
 
 # TODO 4: Every dog starts at 50. Pick your own starting numbers
 #         between 0 and 100. Maybe your dog starts out very hungry?
-happiness = random.randint(0,100)
-hunger = random.randint(0,100)
-energy = random.randint(0,100)
+happiness = random.randint(20,100)
+hunger = random.randint(20,100)
+energy = random.randint(20,100)
 
 
 # TODO 5: Use print() to write a welcome message to the console.
