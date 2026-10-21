@@ -75,7 +75,7 @@ dog_names = ["Rex","Biscuit", "Luna","rock ruff"]
 # TODO 2: Right now the dog is always the first name in the list.
 #         Change this line so the game picks a RANDOM name instead.
 #         Hint: random.choice(dog_names)
-random.choice(dog_names)
+dog_name = random.choice(dog_names)
 
 
 # TODO 3: Ask the player for their name using input().
