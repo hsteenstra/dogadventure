@@ -75,14 +75,12 @@ dog_names = ["Rex","Biscuit", "Luna","rock ruff"]
 # TODO 2: Right now the dog is always the first name in the list.
 #         Change this line so the game picks a RANDOM name instead.
 #         Hint: random.choice(dog_names)
-dog_name = dog_names[0]
 random.choice(dog_names)
 
 
 # TODO 3: Ask the player for their name using input().
 #         A pop-up box will appear when the page loads.
 #         Hint: player_name = input("What is your name? ")
-player_name = "Player"
 player_name = input("what do you want your nick name to be")
 
 
@@ -96,6 +94,7 @@ energy = random.randint(20,100)
 # TODO 5: Use print() to write a welcome message to the console.
 #         Include the player's name AND the dog's name.
 #         Hint: print("Welcome", player_name, "! Your dog is", dog_name)
+print("Welcome", player_name, "! Your dog is", dog_name)
 
 
 
@@ -169,6 +168,7 @@ def feed(event):
     #         Hint: hunger = keep_in_range(hunger - 20)
     #         Then change happiness the same way.
     hunger = keep_in_range(hunger - 20)
+    happiness = keep_in_range(happiness + 5)
 
     say(dog_name + " ate dinner.", "🍖")
     update_screen()
@@ -183,6 +183,7 @@ def play(event):
     #         Remember to use keep_in_range() each time!
     happiness = keep_in_range(happiness+15)
     energy = keep_in_range(energy-10)
+    hunger = keep_in_range(hunger + 10)
     
 
     say(dog_name + " chased the ball!", "🎾")
@@ -197,8 +198,9 @@ def rest(event):
     #         Change energy, then write your own message in say()
     #         below instead of "...". Use the player's name in it.
     #         Hint: dog_name + " took a nap next to " + player_name + "."
-    happiness = keep_in_range(happiness-10)
     energy = keep_in_range(energy+20)
+    hunger = keep_in_range(hunger+20)
+    
 
     say("...", "💤")
     update_screen()
