@@ -68,26 +68,29 @@ def keep_in_range(number):
 # TODO 1: This list only has one name. Add at least 4 more dog names.
 #         Every name needs "quotes" and a comma between names.
 #         Example: ["Rex", "Biscuit", "Luna"]
-dog_names = ["Rex"]
+dog_names = ["Rex","Biscuit", "Luna","rock ruff"]
+
 
 
 # TODO 2: Right now the dog is always the first name in the list.
 #         Change this line so the game picks a RANDOM name instead.
 #         Hint: random.choice(dog_names)
 dog_name = dog_names[0]
+random.choice(dog_names)
 
 
 # TODO 3: Ask the player for their name using input().
 #         A pop-up box will appear when the page loads.
 #         Hint: player_name = input("What is your name? ")
 player_name = "Player"
+player_name = input("what do you want your nick name to be")
 
 
 # TODO 4: Every dog starts at 50. Pick your own starting numbers
 #         between 0 and 100. Maybe your dog starts out very hungry?
-happiness = 50
-hunger = 50
-energy = 50
+happiness = random.randint(0,100)
+hunger = random.randint(0,100)
+energy = random.randint(0,100)
 
 
 # TODO 5: Use print() to write a welcome message to the console.
@@ -114,6 +117,8 @@ def update_screen():
     #             for i in range(happiness // 20):
     #                 hearts = hearts + "❤️"
     hearts = ""
+    for i in range(happiness// 20):
+        hearts = hearts + "❤️"
 
     show("hearts", hearts)
 
@@ -137,10 +142,12 @@ def random_event():
     #          to the console, so you can check they're all there.
     #          Hint:
     #              for event in events:
-    #                  print(event)
+    #                print(event)
     events = [
         dog_name + " found a stick!",
     ]
+    for event in events:
+        print(event)
 
     # 1 in 4 chance that a surprise happens (this part is done for you)
     if random.randint(1, 4) == 1:
@@ -161,7 +168,7 @@ def feed(event):
     # TODO 6: Feeding should make the dog LESS hungry and a little happier.
     #         Hint: hunger = keep_in_range(hunger - 20)
     #         Then change happiness the same way.
-
+    Hint: hunger = keep_in_range(hunger - 20)
 
     say(dog_name + " ate dinner.", "🍖")
     update_screen()
@@ -174,7 +181,9 @@ def play(event):
     # TODO 7: Playing makes the dog happier, but it uses up energy
     #         and makes the dog hungrier. Change all three stats.
     #         Remember to use keep_in_range() each time!
-
+    happiness = keep_in_range(happiness+15)
+    energy = keep_in_range(energy-10)
+    
 
     say(dog_name + " chased the ball!", "🎾")
     update_screen()
@@ -188,7 +197,8 @@ def rest(event):
     #         Change energy, then write your own message in say()
     #         below instead of "...". Use the player's name in it.
     #         Hint: dog_name + " took a nap next to " + player_name + "."
-
+    happiness = keep_in_range(happiness-10)
+    energy = keep_in_range(energy+20)
 
     say("...", "💤")
     update_screen()
