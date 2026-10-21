@@ -168,7 +168,7 @@ def feed(event):
     # TODO 6: Feeding should make the dog LESS hungry and a little happier.
     #         Hint: hunger = keep_in_range(hunger - 20)
     #         Then change happiness the same way.
-    Hint: hunger = keep_in_range(hunger - 20)
+    hunger = keep_in_range(hunger - 20)
 
     say(dog_name + " ate dinner.", "🍖")
     update_screen()
